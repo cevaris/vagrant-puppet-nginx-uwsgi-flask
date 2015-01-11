@@ -1,0 +1,19 @@
+server {
+    listen          80;
+    server_name     myapp.example.co.uk;
+
+    access_log            /var/log/nginx/myapp.example.co.uk.access.log combined;
+    error_log             /var/log/nginx/myapp.example.co.uk.error.log;
+
+    location / {
+        try_files $uri @app;
+    }
+
+    location @app {
+        include uwsgi_params;
+        uwsgi_pass unix:////tmp/uwsgi.sock;
+    }
+
+    passenger_enabled on;
+    passenger_ruby /usr/bin/ruby;
+}
