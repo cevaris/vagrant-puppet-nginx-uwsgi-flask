@@ -10,6 +10,8 @@ settings = {
   :ip => "192.168.33.10",
 }
 
+APP_PATH='/git/flask_example'
+
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     # Box name
     config.vm.box = settings[:box]
@@ -27,7 +29,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.network :private_network, ip: settings[:ip]
 
     # Shared folders
-    config.vm.synced_folder "src/", "/var/www/#{settings[:hostname]}.#{domain}/src"
+    config.vm.synced_folder APP_PATH, "/var/www/#{settings[:hostname]}.#{domain}/src", id: "vagrant-root",
+                            owner: "vagrant",
+                            group: "www-data",
+                            mount_options: ["dmode=755,fmode=664"]
 
     # Puppet config
     config.vm.provision :puppet do |puppet|
