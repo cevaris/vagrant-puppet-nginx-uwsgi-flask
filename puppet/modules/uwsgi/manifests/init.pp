@@ -21,7 +21,7 @@ class uwsgi {
     package { "uwsgi":
         ensure => installed,
         provider => pip,
-        require => [Class["python::packages"], Package["upstart"]],
+        require => [Class["python"], Package["upstart"]],
     }
     file { "/etc/init/uwsgi.conf":
         ensure => present,
